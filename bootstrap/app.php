@@ -13,6 +13,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         //
+        // kita bisa $middleware
+        $middleware->alias([
+            "role"=>\App\Http\Middleware\Checkrole::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
