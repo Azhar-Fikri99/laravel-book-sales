@@ -5,6 +5,9 @@ use App\Http\Controllers\Api\AuthorController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\GenreController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\Payment_MethodController;
+use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\PaymentMethodController;
 use App\Http\Resources\OrderResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -32,7 +35,12 @@ Route::middleware(['auth:api'])->group(function (){
     //     return $request->user();
     // });
 
+    // ini user yang sedang login
+
     Route::get('/user', fn(Request $request) =>  $request->user());
+
+    // ini kalau kita mau ambil id
+    // Route::get('/user', fn(Request $request) =>  $request->user()->id);
 
     Route::middleware(['role:admin,staff'])->group(function (){
         // Route::post('/books', [BookController::class, 'store']);
@@ -44,7 +52,34 @@ Route::middleware(['auth:api'])->group(function (){
         Route::apiResource('/genres', GenreController::class)->only(['store', 'update','destroy']);
         Route::apiResource('/authors', AuthorController::class)->only(['store','update', 'destory']);
 
+ 
+
     });
+    Route::middleware(['role:customer'])->group(function (){
+        Route::apiResource('/orders', OrderController::class);
+    });
+
+
+    //tugas 2 Januari 2025//crud admin staff
+    // customer read aja
+    Route::middleware(['role:customer'])->group(function (){
+        Route::apiResource('/payment_methods', Payment_MethodController::class)->only(['index', 'show']);
+    });
+
+    Route::middleware(['role:staff'])->group(function (){
+        Route::apiResource('/payment_methods', Payment_MethodController::class)->only(['index','show','update','destroy']);
+
+        // Route::apiResource('/payment_methods', Payment_MethodController::class)->only(['index','show','update','destroy']);
+        //  Route::get('/payment_methods', [Payment_MethodController::class, 'index']);
+        //  Route::get('/payment_methods', [Payment_MethodController::class, 'store']);
+        // Route::post('/genres', [GenreController::class, 'store']);
+        // Route::put('/genres/{id}', [GenreController::class, 'update']);
+        // Route::delete('/genres/{id}', [GenreController::class, 'destroy']);
+
+    });
+
+
+
 });
 
 
@@ -63,4 +98,18 @@ Route::apiResource('/authors', AuthorController::class)->only(['index', 'show'])
 
 
 // orders
+// Route::apiResource('/orders', OrderController::class);
+
+// Route::get('/tes', function(){
+//     // return uniqid();
+
+//     // ini saya mau huruf nya besar
+//     return "ORD-" .strtoupper(uniqid());
+// });
+
+
 Route::apiResource('/orders', OrderController::class);
+// ini kita testing di postman
+
+// tugas
+// Route::apiResource('/payments', PaymentController::class)->only(['index', 'show']);

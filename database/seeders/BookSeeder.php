@@ -28,7 +28,7 @@ class BookSeeder extends Seeder
             Book::create([
                 'title' => 'Harry Pother and The Sorcener',
                 'description' => 'An orphaned boy enrolls in a school of wizardy, where he learns',
-                'price' => 10.59,
+                'price' => 50000,
                 'stock' => 50,
                 'cover_photo' => "harry_potther.jpg",
                 'genre_id' => 1,
@@ -38,7 +38,7 @@ class BookSeeder extends Seeder
             Book::create([
                 'title' => 'The Conjuring',
                 'description' => ' supernatural horror film directed by James Wan. It is based on the real-life paranormal investigations of Ed and Lorraine Warren',
-                'price' => 44.12,
+                'price' => 25000,
                 'stock' => 30,
                 'cover_photo' => "Conjuring.jpg",
                 'genre_id' => 2,
@@ -48,7 +48,7 @@ class BookSeeder extends Seeder
             Book::create([
                 'title' => 'Winter in Tokyo',
                 'description' => 'a unique and beautiful experience, offering a mix of cold weather and festive charm. The season typically spans from December to February',
-                'price' => 77.32,
+                'price' => 40000,
                 'stock' => 12,
                 'cover_photo' => "winter_tokyo.jpg",
                 'genre_id' => 3,
