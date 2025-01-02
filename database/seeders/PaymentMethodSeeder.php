@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Payment_Method;
+use App\Models\PaymentMethod;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class Payment_MethodSeeder extends Seeder
+class PaymentMethodSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,23 +14,23 @@ class Payment_MethodSeeder extends Seeder
     public function run(): void
     {
         
-        Payment_Method::create([                  // ini di import ke model
+        PaymentMethod::create([                  // ini di import ke model
                 "name"=> "BCA",
-                "account_number"=> 12345678901,
+                "account_number"=> 123456,
                 "image"=> "BCA.jpg"
             ]);
     
-            Payment_Method::create([                  // ini di import ke model
+            PaymentMethod::create([                  // ini di import ke model
                 "name"=> "BTN",
-                "account_number"=> 9876543213,
+                "account_number"=> 98765,
                 "image"=> "BTN.jpg"
             ]);
                    
 
             
-            Payment_Method::create([                  // ini di import ke model
+            PaymentMethod::create([                  // ini di import ke model
                 "name"=> "BNI",
-                "account_number"=> 444433323,
+                "account_number"=> 4444,
                 "image"=> "BNI.jpg"
             ]);
         

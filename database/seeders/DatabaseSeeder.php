@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             GenreSeeder::class,
             BookSeeder::class,
             OderrSeeder::class,
-            Payment_MethodSeeder::class
+            PaymentMethodSeeder::class
         ]);
     }
 }

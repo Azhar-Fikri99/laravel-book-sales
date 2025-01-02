@@ -5,9 +5,8 @@ use App\Http\Controllers\Api\AuthorController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\GenreController;
 use App\Http\Controllers\Api\OrderController;
-use App\Http\Controllers\Api\Payment_MethodController;
+use App\Http\Controllers\Api\PaymentMethodController;
 use App\Http\Controllers\Api\PaymentController;
-use App\Http\Controllers\PaymentMethodController;
 use App\Http\Resources\OrderResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -55,19 +54,18 @@ Route::middleware(['auth:api'])->group(function (){
  
 
     });
-    Route::middleware(['role:customer'])->group(function (){
-        Route::apiResource('/orders', OrderController::class);
-    });
 
+    Route::apiResource('/payment_methods', PaymentMethodController::class)->only(['index', 'show']);
+  
 
     //tugas 2 Januari 2025//crud admin staff
     // customer read aja
     Route::middleware(['role:customer'])->group(function (){
-        Route::apiResource('/payment_methods', Payment_MethodController::class)->only(['index', 'show']);
+       
     });
 
-    Route::middleware(['role:staff'])->group(function (){
-        Route::apiResource('/payment_methods', Payment_MethodController::class)->only(['index','show','update','destroy']);
+    Route::middleware(['role:staff,admin'])->group(function (){
+        Route::apiResource('/payment_methods', PaymentMethodController::class)->only(['index','show','update','destroy']);
 
         // Route::apiResource('/payment_methods', Payment_MethodController::class)->only(['index','show','update','destroy']);
         //  Route::get('/payment_methods', [Payment_MethodController::class, 'index']);
@@ -82,6 +80,9 @@ Route::middleware(['auth:api'])->group(function (){
 
 });
 
+Route::middleware(['role:customer'])->group(function (){
+    Route::apiResource('/orders', OrderController::class);
+});
 
 // books
 
