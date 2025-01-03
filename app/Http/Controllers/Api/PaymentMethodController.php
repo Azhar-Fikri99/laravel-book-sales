@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Payment_MethodResource;
 use App\Models\PaymentMethod;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class PaymentMethodController extends Controller
@@ -46,10 +47,16 @@ class PaymentMethodController extends Controller
             // $image = $request->file('image');
             // $image->store('payment_methods', 'public');         // suapa ya nanti file nya di simpan larave, di bagain folder storage, 
 
+            $image = $request->file('image');
+            $image->store('payment_methods', 'public');         // suapa ya nanti file nya di simpan larave, di bagain folder storage, 
 
 
 
-            //3. insert data
+            
+
+
+
+            //4. insert data
             //Order nya dari model, pakai O nya huruf besar
             $payment_method= PaymentMethod::create([
                 // ini masih kita kosongin 
@@ -58,7 +65,7 @@ class PaymentMethodController extends Controller
 
                 //nanti isi dari customer_id adalah $user dari yang atas nya yang auth
                 "account_number" => $request->account_number,
-                "image" => $request->image
+                "image" =>$image->hashName()
             ]);
 
 
@@ -109,7 +116,7 @@ class PaymentMethodController extends Controller
         $validator = Validator::make($request->all(), [
             "name" => "required|string",
             "account_number" => 'required|integer',
-            "image" => "required|image|mimes:jpeg,png,gif,svg|max:2048",
+            "image" => "nullable|image|mimes:jpeg,png,gif,svg|max:2048",
         ]);
 
         if($validator->fails()){
@@ -128,18 +135,24 @@ class PaymentMethodController extends Controller
         // kalau ini berarti wajib dong, foto nya
         // "photo"=>$request->photo
         "account_number"=>$request->account_number,
-        "image"=>$request->image,
     ];
 
-         //... uplaod image, kalau tanpa kodingan upload image itu udah bisa
-        //  if($request->hasFile('image')){
-        //     $image= $request->file("image");
-        //     $image->store('payment_methods', 'public');
+     
+        //... uplaod image, kalau tanpa kodingan upload image itu udah bisa
+        if($request->hasFile('image')){
+            $image_name= $request->file("image");
+            // ini nanti di buatkan otomatis nama nya
+            // payment_methods  dibuatkan
+            $image_name->store('payment_methods', 'public');
 
+            if($payment_method->image){
 
-        //     $data["image"] = $image->hashName();
-        // };
+                //ini dari folder storage, file nya di hapus
+                Storage::disk("public")->delete('payment_methods/' . $payment_method->image);
+            };
 
+            $data["image"] = $image_name->hashName();
+        };
 
             // update data baru
             $payment_method->update($data);

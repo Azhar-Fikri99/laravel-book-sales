@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\GenreController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PaymentMethodController;
 use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\Api\PaymentsController;
 use App\Http\Resources\OrderResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -51,46 +52,49 @@ Route::middleware(['auth:api'])->group(function (){
         Route::apiResource('/genres', GenreController::class)->only(['store', 'update','destroy']);
         Route::apiResource('/authors', AuthorController::class)->only(['store','update', 'destory']);
 
- 
+
 
     });
 
     Route::apiResource('/payment_methods', PaymentMethodController::class)->only(['index', 'show']);
-  
+
 
     //tugas 2 Januari 2025//crud admin staff
     // customer read aja
     Route::middleware(['role:customer'])->group(function (){
-       
+
     });
 
     Route::middleware(['role:staff,admin'])->group(function (){
-        Route::apiResource('/payment_methods', PaymentMethodController::class)->only(['index','show','update','destroy']);
+        Route::apiResource('/payment_methods', PaymentMethodController::class)->only(['store','update','destroy']);
 
-        // Route::apiResource('/payment_methods', Payment_MethodController::class)->only(['index','show','update','destroy']);
-        //  Route::get('/payment_methods', [Payment_MethodController::class, 'index']);
-        //  Route::get('/payment_methods', [Payment_MethodController::class, 'store']);
-        // Route::post('/genres', [GenreController::class, 'store']);
-        // Route::put('/genres/{id}', [GenreController::class, 'update']);
-        // Route::delete('/genres/{id}', [GenreController::class, 'destroy']);
+    });
+
+    Route::middleware(['role:staff,admin'])->group(function (){
+        Route::apiResource('/payments', PaymentsController::class)->only(['store','update','destroy']);
 
     });
 
 
+    // payments
+    // Route::middleware(['role:staff'])->group(function (){
+    //     Route::apiResource('/payments', PaymentMethodController::class)->only(['index','show','store']);
+    // });
 
+    // Route::middleware(['role:admin'])->group(function (){
+    //     Route::apiResource('/payments', PaymentMethodController::class)->only(['destroy']);
+    // });
+
+    // Route::middleware(['role:customer'])->group(function (){
+    //     Route::apiResource('/payments', PaymentMethodController::class)->only(['index', 'store']);
+    // });
 });
 
 Route::middleware(['role:customer'])->group(function (){
     Route::apiResource('/orders', OrderController::class);
 });
 
-// books
 
-// genres
-
-
-
-// authors
 
 //ini yang bisa di akses oleh orang lain
 Route::apiResource('/books', BookController::class)->only(['index', 'show']);
