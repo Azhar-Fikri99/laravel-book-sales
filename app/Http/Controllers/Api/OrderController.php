@@ -19,7 +19,7 @@ class OrderController extends Controller
         $orders = Order::all();
              return new OrderResource(true, "Get All Rosource", $orders);
 
-   
+
             // return response()->json([
             //     "status" => true,
             //     "message" => "GET ALL NOT Resource",
@@ -29,7 +29,7 @@ class OrderController extends Controller
     }
 
 
- 
+
 
         public function store(Request $request)
         {
@@ -37,15 +37,15 @@ class OrderController extends Controller
             //1. membuat validasi (validator)
             //2. Chek validator
             //3. insert data
-            //4. return response 
+            //4. return response
 
             //validator kita ambil yang support:facades
-            
+
               //1. membuat validasi (validator)
-              
+
             $validator = Validator::make($request->all(),[
                 // di sini sebenar nya kita cukup 2 aja
-                
+
                 // books, id dari table book
                 // 2 item ini akan ada di postman, body nya
                 "book_id" => "required|exists:books,id",
@@ -76,7 +76,7 @@ class OrderController extends Controller
             $user = auth('api')->user();
             //user nya dari middleware
 
-            
+
             //cek login user
             if(!$user){
                 return response()->json([
@@ -110,7 +110,7 @@ class OrderController extends Controller
              //3. insert data
             //Order nya dari model, pakai O nya huruf besar
             $order= Order::create([
-                // ini masih kita kosongin 
+                // ini masih kita kosongin
                 //variable $orderNumber sudah ada, kita tinggal copas aja di sini
                 'order_number' => $orderNumber,
 
@@ -123,7 +123,7 @@ class OrderController extends Controller
                 "status"=> 'pending'
             ]);
 
-            
+
             //4. return response
             // memberi pesan berhasil
             // return response()-> json([
@@ -143,35 +143,35 @@ class OrderController extends Controller
 
 
 
-        
+
 
 //         public function show(string $id){
 //             $order = Order::find($id);
-         
-      
+
+
 //             if (!$order) {
 //                 return response()->json([
-//                     "success" => false, 
+//                     "success" => false,
 //                     "message" => "Resource not fonud"
 //                 ], 404);
 //             }
-               
+
 //             return response()->json([
 //                 "success" => true,
 //                 "message" => "Get detail Resource",
 //                 "data" => $order
 //             ], 200);
 //         }
-            
-  
 
-     
 
-        
+
+
+
+
 //         public function update(Request $request, string $id){
 //                 //biasa nya taro  di paling atas sini
 //                 $order = Order::find($id);
-                
+
 //                 if(!$order){
 //                     return response()->json(
 //                         [
@@ -188,7 +188,7 @@ class OrderController extends Controller
 //                     "customer_id" => "required|exists:customer_id",
 //                     "book_id" => "required|exists:customer_id",
 //                     "total_amount"=>"required|Numeric",
-//                     "status"=>"required|in:'pending','processing','shipped','completed','canceled'"              
+//                     "status"=>"required|in:'pending','processing','shipped','completed','canceled'"
 //                 ]);
 
 
@@ -199,7 +199,7 @@ class OrderController extends Controller
 //                         "success"=> false,
 //                         "message"=> $validator->errors()
 //                     ],422);
-           
+
 
 //               //terakhir kita copy bagian return nya
 //               $order->update([
@@ -220,8 +220,8 @@ class OrderController extends Controller
 //     }
 // //==============================================================================================
 
-    
-   
+
+
 //         //Delete itu pakai function destroy
 //         public function destroy(string $id){
 //             $order = Order::find($id);

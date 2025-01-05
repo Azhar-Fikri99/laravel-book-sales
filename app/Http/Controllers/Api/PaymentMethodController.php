@@ -22,13 +22,13 @@ class PaymentMethodController extends Controller
     {
         $validator = Validator::make($request->all(),[
             // di sini sebenar nya kita cukup 2 aja
-            
+
             // books, id dari table book
             // 2 item ini akan ada di postman, body nya
             "name" => "required|string",
             "account_number" => "required|integer",
             "image" => "required|image|mimes:jpeg,png,gif,svg|max:2048",
-        
+
         ]);
 
 
@@ -40,26 +40,26 @@ class PaymentMethodController extends Controller
                 ], 422);
             }
 
-            
+
             // 3. upload image
             // supaya gambar nya masuk ke storage
             // // $image adalah variable, bebas tulis nya
             // $image = $request->file('image');
-            // $image->store('payment_methods', 'public');         // suapa ya nanti file nya di simpan larave, di bagain folder storage, 
+            // $image->store('payment_methods', 'public');         // suapa ya nanti file nya di simpan larave, di bagain folder storage,
 
             $image = $request->file('image');
-            $image->store('payment_methods', 'public');         // suapa ya nanti file nya di simpan larave, di bagain folder storage, 
+            $image->store('payment_methods', 'public');         // siapa  nanti file nya di simpan laravel, di bagain folder storage,
 
 
 
-            
+
 
 
 
             //4. insert data
             //Order nya dari model, pakai O nya huruf besar
             $payment_method= PaymentMethod::create([
-                // ini masih kita kosongin 
+                // ini masih kita kosongin
                 //variable $orderNumber sudah ada, kita tinggal copas aja di sini
                 'name' => $request->name,
 
@@ -69,24 +69,24 @@ class PaymentMethodController extends Controller
             ]);
 
 
-            
+
             return new Payment_MethodResource(true, "Order Created Successfully", $payment_method);
     }
 
 
 
-         
+
     public function show(string $id){
         $payment_method = PaymentMethod::find($id);
-     
-       
+
+
         // tugas : tambahkan error handling ketika id yang dicari tidak ditemukan
         // success = false
         // message = "Resource not fonud"
         // error 404
         if (!$payment_method) {
             return response()->json([
-                "success" => false, 
+                "success" => false,
                 "message" => "Resource not fonud"
             ], 404);
         }
@@ -96,10 +96,10 @@ class PaymentMethodController extends Controller
             "message" => "Get detail Resource",
             "data" => $payment_method
         ], 200);
-    
+
     }
- 
-    
+
+
     //===================================================================
     //Update
     public function update(Request $request, string $id)
@@ -112,7 +112,7 @@ class PaymentMethodController extends Controller
                 "message" => "Resource Not Found"
             ],404);
         }
-        
+
         $validator = Validator::make($request->all(), [
             "name" => "required|string",
             "account_number" => 'required|integer',
@@ -137,7 +137,7 @@ class PaymentMethodController extends Controller
         "account_number"=>$request->account_number,
     ];
 
-     
+
         //... uplaod image, kalau tanpa kodingan upload image itu udah bisa
         if($request->hasFile('image')){
             $image_name= $request->file("image");
@@ -171,7 +171,7 @@ class PaymentMethodController extends Controller
     public function destroy(string $id)
     {
         $payment_method = PaymentMethod::find($id);
-        
+
         if(!$payment_method){
             return response()->json([
                 "success"=> false,
@@ -179,8 +179,8 @@ class PaymentMethodController extends Controller
             ], 400);
     }
 
-        
-      
+
+
 
         // delete data from db
         $payment_method->delete();
@@ -189,7 +189,7 @@ class PaymentMethodController extends Controller
             "success"=> true,
             "message"=> "Resource deleted Successfully"
         ], 200);
-        
+
     }
-        
+
 }

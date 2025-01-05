@@ -70,24 +70,13 @@ Route::middleware(['auth:api'])->group(function (){
 
     });
 
-    Route::middleware(['role:staff,admin'])->group(function (){
-        Route::apiResource('/payments', PaymentsController::class)->only(['store','update','destroy']);
 
+
+       // payments
+   Route::middleware(['role:customer'])->group(function (){
+    Route::apiResource('/payment', PaymentController::class)->only(['index', 'show']);
     });
 
-
-    // payments
-    // Route::middleware(['role:staff'])->group(function (){
-    //     Route::apiResource('/payments', PaymentMethodController::class)->only(['index','show','store']);
-    // });
-
-    // Route::middleware(['role:admin'])->group(function (){
-    //     Route::apiResource('/payments', PaymentMethodController::class)->only(['destroy']);
-    // });
-
-    // Route::middleware(['role:customer'])->group(function (){
-    //     Route::apiResource('/payments', PaymentMethodController::class)->only(['index', 'store']);
-    // });
 });
 
 Route::middleware(['role:customer'])->group(function (){
