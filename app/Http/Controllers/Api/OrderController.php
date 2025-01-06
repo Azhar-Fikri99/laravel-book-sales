@@ -120,7 +120,12 @@ class OrderController extends Controller
 
                 //kita harus tau dulu, buku yang maa
                 "total_amount"=> $totalAmount,
-                "status"=> 'pending'
+                "status"=> 'pending',
+                // $user dari user login
+                // "staff_confirmed_by" => $user->name,
+                // bisa juga
+                "staff_confirmed_by" => auth('api')->user()->name,
+                "staff_confirmed_at" => now()
             ]);
 
 

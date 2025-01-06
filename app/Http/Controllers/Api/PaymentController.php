@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
+use App\Http\Resources\PaymentResource;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Payment_method;
@@ -13,16 +14,18 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 class PaymentController extends Controller
 {
-
     public function index(){
         $payments = Payment::all();
-            return new OrderResource(true,  "Get All Resourse", $payments);
+            return new PaymentResource(true,  "Get All Resourse", $payments);
 
-        return response()->json([
-            "status" => true,
-            "message" => "Get All Resourse",
-            "Data" => $payments
-        ], 200);
+
+            // ada 2 jenis respon
+            // yaitu : return (bagian atas) kedua bagian bawah
+        //     return response()->json([
+        //     "status" => true,
+        //     "message" => "Get All Resourse",
+        //     "Data" => $payments
+        // ], 200);
     }
 
     //==================================================================================================
@@ -49,7 +52,7 @@ class PaymentController extends Controller
         }
 
         //  // Ambil data user yang sedang login
-        //  $user = auth('api')->user();
+        //  $user = auth('api')->user()->name;
 
         //  // cek login user
         //  if (!$user) {
@@ -117,9 +120,9 @@ class PaymentController extends Controller
 
         // 2. membuat validasi
         $validator = Validator::make($request->all(), [
-            'order_id' => 'required|exists:orders,id',
-            'payment_method_id' => 'required|exists:payment_methods,id',
-            'status'=> 'required|string',
+            // 'order_id' => 'required|exists:orders,id',
+            // 'payment_method_id' => 'required|exists:payment_methods,id',
+            'status'=> 'required|string'
         ]);
 
         // 3. melakukan cek data yang bermasalah
@@ -130,13 +133,27 @@ class PaymentController extends Controller
           ], 422);
         }
 
-        // ambil data order
-        $order = Order::find($request->order_id);
 
-        $order->update([
-            'order_id' => $request->order_id,
-            'payment_method_id' => $request->payment_method_id,
-            'status'=> 'pending',
+         //  // Ambil data user yang sedang login
+         $user = auth('api')->user()->name;
+
+            //cek login user
+            if(!$user){
+                return response()->json([
+                    'status' => false,
+                    'message' => "Unathorize"
+                ], 401);
+            }
+
+        // ambil data order
+        // $order = Order::find($request->order_id);
+
+        $payment->update([
+            // 'order_id' => $request->order_id,
+            // 'payment_method_id' => $request->payment_method_id,
+            'status'=> $request->status,
+            "staff_confirmed_by"=> auth('api')->user()->name,
+            "staff_confirmed_at" => now()
         ]);
 
         return response()->json([

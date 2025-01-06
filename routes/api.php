@@ -52,6 +52,7 @@ Route::middleware(['auth:api'])->group(function (){
         Route::apiResource('/genres', GenreController::class)->only(['store', 'update','destroy']);
         Route::apiResource('/authors', AuthorController::class)->only(['store','update', 'destory']);
 
+        Route::apiResource('/payment_methods', PaymentMethodController::class)->only(['store','update','destroy']);
 
 
     });
@@ -65,19 +66,28 @@ Route::middleware(['auth:api'])->group(function (){
 
     });
 
-    Route::middleware(['role:staff,admin'])->group(function (){
-        Route::apiResource('/payment_methods', PaymentMethodController::class)->only(['store','update','destroy']);
 
+
+
+    //    payments
+   Route::middleware(['role:customer'])->group(function (){
+    Route::apiResource('/payment', PaymentController::class)->only(['index', 'show', "store"]);
     });
 
 
+   Route::middleware(['role:staff'])->group(function (){
+// strore create
+    Route::apiResource('/payment', PaymentController::class)->only(["update"]);
+    });
 
-       // payments
-   Route::middleware(['role:customer'])->group(function (){
-    Route::apiResource('/payment', PaymentController::class)->only(['index', 'show']);
+    Route::middleware(['role:admin'])->group(function (){
+        // strore create
+        Route::apiResource('/payments', PaymentController::class)->only(["destroy"]);
     });
 
 });
+
+//======================================================================================
 
 Route::middleware(['role:customer'])->group(function (){
     Route::apiResource('/orders', OrderController::class);
@@ -91,19 +101,13 @@ Route::apiResource('/genres', GenreController::class)->only(['index', 'show']);
 Route::apiResource('/authors', AuthorController::class)->only(['index', 'show']);
 
 
-// orders
-// Route::apiResource('/orders', OrderController::class);
 
-// Route::get('/tes', function(){
-//     // return uniqid();
-
-//     // ini saya mau huruf nya besar
-//     return "ORD-" .strtoupper(uniqid());
-// });
 
 
 Route::apiResource('/orders', OrderController::class);
-// ini kita testing di postman
 
-// tugas
-// Route::apiResource('/payments', PaymentController::class)->only(['index', 'show']);
+
+
+
+//show : untuk menampilkan data 1, berdasarkan id
+//index : untuk semua data di tampilkan
