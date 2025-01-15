@@ -24,6 +24,13 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api');
 
 
+Route::apiResource('/books', BookController::class);
+Route::apiResource('/genres', GenreController::class);
+Route::apiResource('/orders', OrderController::class);
+Route::apiResource('/authors', AuthorController::class);
+Route::apiResource('/payment_methods', PaymentMethodController::class);
+
+
 // ini wajib login middle war atas ini
 Route::middleware(['auth:api'])->group(function (){
 
@@ -52,12 +59,12 @@ Route::middleware(['auth:api'])->group(function (){
         Route::apiResource('/genres', GenreController::class)->only(['store', 'update','destroy']);
         Route::apiResource('/authors', AuthorController::class)->only(['store','update', 'destory']);
 
-        Route::apiResource('/payment_methods', PaymentMethodController::class)->only(['store','update','destroy']);
+        // Route::apiResource('/payment_methods', PaymentMethodController::class)->only(['store','update','destroy']);
 
 
     });
 
-    Route::apiResource('/payment_methods', PaymentMethodController::class)->only(['index', 'show']);
+    // Route::apiResource('/payment_methods', PaymentMethodController::class)->only(['index', 'show']);
 
 
     //tugas 2 Januari 2025//crud admin staff
@@ -89,6 +96,9 @@ Route::middleware(['auth:api'])->group(function (){
 
 //======================================================================================
 
+
+
+
 Route::middleware(['role:customer'])->group(function (){
     Route::apiResource('/orders', OrderController::class);
 });
@@ -104,7 +114,10 @@ Route::apiResource('/authors', AuthorController::class)->only(['index', 'show'])
 
 
 
+Route::apiResource('/books', BookController::class);
+Route::apiResource('/genres', GenreController::class);
 Route::apiResource('/orders', OrderController::class);
+Route::apiResource('/payment_methods', PaymentMethodController::class);
 
 
 
